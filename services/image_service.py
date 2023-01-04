@@ -7,7 +7,7 @@ import uuid
 import boto3
 import requests
 from http import HTTPStatus
-from common import config
+from meta2d.common import config
 
 def get_client(region: str = config.REGION):
     # create s3 client
