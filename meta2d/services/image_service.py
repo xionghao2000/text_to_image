@@ -22,7 +22,9 @@ def get_image_key(bucket_folder: str = 'b'):
     return key
 
 
-def get_url(client, key: str, imageContent: bytes, bucketname: str = config.BUCKET_NAME , region: str = 'ap-east-1'):
+def get_url(client, key: str, imageContent: bytes):
+    bucketname = config.BUCKET_NAME
+    region = config.REGION
     # upload image to s3
     client.put_object(Body=imageContent, Bucket=bucketname,
                       Key=key, ContentType='image/png')
