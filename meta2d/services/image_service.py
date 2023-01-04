@@ -7,36 +7,39 @@ import uuid
 import boto3
 import requests
 from http import HTTPStatus
-from meta2d.common import config
 
-def get_client(region: str = config.REGION):
+from meta2d.common.config_2d import Config2D
+
+
+def get_client(region: str = Config2D.REGION):
     # create s3 client
     s3 = boto3.resource('s3', region_name=region)
     client = boto3.client('s3', region_name=region)
     return client
 
+
 def get_image_key(bucket_folder: str = 'b'):
     # use uuid as filename
-    filename = str(uuid.uuid4())+'.png'
-    key = bucket_folder+'/'+filename
+    filename = str(uuid.uuid4()) + '.png'
+    key = bucket_folder + '/' + filename
     return key
 
 
-def get_url(client, key: str, imageContent: bytes):
-    bucketname = config.BUCKET_NAME
-    region = config.REGION
+def get_image_url(client, key: str, imageContent: bytes):
+    bucketname = Config2D.BUCKET_NAME
+    region = Config2D.REGION
     # upload image to s3
     client.put_object(Body=imageContent, Bucket=bucketname,
                       Key=key, ContentType='image/png')
     # get url
-    url = "https://s3."+region+".amazonaws.com/" + bucketname + "/" + key
+    url = "https://s3." + region + ".amazonaws.com/" + bucketname + "/" + key
     return url
-    
-def text_to_image(prompt, negative_prompt = "", 
-                    width = 512, height = 512,                     
-                    token = config.TOKEN):
 
-    url = config.IMAGE_URL+'/api/dev/dev_text_to_image'
+
+def text_to_image(prompt, negative_prompt="",
+                  width=512, height=512,
+                  token=Config2D.TOKEN):
+    url = Config2D.IMAGE_URL + '/api/dev/dev_text_to_image'
     data = {
         "prompt": prompt,
         "negative_prompt": negative_prompt,
@@ -47,7 +50,7 @@ def text_to_image(prompt, negative_prompt = "",
         "random_seed": True,
 
         "token": token
-    }    
+    }
 
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
@@ -59,7 +62,7 @@ def text_to_image(prompt, negative_prompt = "",
             for urlPath in resObj['data']['list_image']:
                 computing_second = resObj['data']['computing_second']
 
-                imageUrl = config.IMAGE_URL + urlPath
+                imageUrl = Config2D.IMAGE_URL + urlPath
                 reqImage = requests.get(imageUrl)
                 if reqImage.status_code == 200:
                     urlParse = urlparse(imageUrl)

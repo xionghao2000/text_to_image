@@ -9,3 +9,4 @@ Dockerfile
 meta2d.egg-info
 dist
 build
+common/config.py
