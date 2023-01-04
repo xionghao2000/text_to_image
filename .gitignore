@@ -6,3 +6,6 @@ __pycache__
 vercel.json
 Dockerfile
 .releaserc
+meta2d.egg-info
+dist
+build
