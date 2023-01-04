@@ -1,17 +1,13 @@
-from fileinput import filename
-from http import client
 import json
-import os
-from urllib.parse import urlparse
 import uuid
+from http import HTTPStatus
+from urllib.parse import urlparse
+
 import boto3
 import requests
-from http import HTTPStatus
-
-from meta2d.common.config_2d import Config2D
 
 
-def get_client(region: str = Config2D.REGION):
+def get_client(region: str):
     # create s3 client
     s3 = boto3.resource('s3', region_name=region)
     client = boto3.client('s3', region_name=region)
@@ -25,9 +21,7 @@ def get_image_key(bucket_folder: str = 'b'):
     return key
 
 
-def get_image_url(client, key: str, imageContent: bytes):
-    bucketname = Config2D.BUCKET_NAME
-    region = Config2D.REGION
+def get_image_url(client, key: str, imageContent: bytes, bucketname: str, region: str):
     # upload image to s3
     client.put_object(Body=imageContent, Bucket=bucketname,
                       Key=key, ContentType='image/png')
@@ -36,10 +30,10 @@ def get_image_url(client, key: str, imageContent: bytes):
     return url
 
 
-def text_to_image(prompt, negative_prompt="",
+def text_to_image(img_url, token, prompt, negative_prompt="",
                   width=512, height=512,
-                  token=Config2D.TOKEN):
-    url = Config2D.IMAGE_URL + '/api/dev/dev_text_to_image'
+                  ):
+    url = img_url + '/api/dev/dev_text_to_image'
     data = {
         "prompt": prompt,
         "negative_prompt": negative_prompt,
@@ -62,7 +56,7 @@ def text_to_image(prompt, negative_prompt="",
             for urlPath in resObj['data']['list_image']:
                 computing_second = resObj['data']['computing_second']
 
-                imageUrl = Config2D.IMAGE_URL + urlPath
+                imageUrl = img_url + urlPath
                 reqImage = requests.get(imageUrl)
                 if reqImage.status_code == 200:
                     urlParse = urlparse(imageUrl)

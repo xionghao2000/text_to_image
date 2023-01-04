@@ -10,3 +10,4 @@ meta2d.egg-info
 dist
 build
 common/config.py
+meta2d/common/config.py

@@ -1,4 +1,4 @@
-# mylink-ai-nft 
+# mylink-ai-nft
 
 ```
 - vercel.json
