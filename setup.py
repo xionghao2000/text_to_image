@@ -8,10 +8,10 @@ setup(
         "meta2d.services",
     ],
     install_requires=[
-        "torch"
-        "boto3"
-        "python-dotenv"
-        "flask"
+        "torch",
+        "boto3",
+        "python-dotenv",
+        "flask",
     ],
     author="meta2d_model",
     description="meta2d_model",
