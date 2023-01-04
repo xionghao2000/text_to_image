@@ -1,0 +1,6 @@
+
+*.md
+1FE18466BE-0.png
+__pycache__
+.env
+.vercel
