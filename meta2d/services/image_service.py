@@ -7,10 +7,12 @@ import boto3
 import requests
 
 
-def get_client(region: str):
+def get_client(region: str, aws_access_key_id: str, aws_secret_access_key: str):
     # create s3 client
-    s3 = boto3.resource('s3', region_name=region)
-    client = boto3.client('s3', region_name=region)
+    s3 = boto3.resource('s3', region_name=region, aws_access_key_id=aws_access_key_id,
+                        aws_secret_access_key=aws_secret_access_key)
+    client = boto3.client('s3', region_name=region, aws_access_key_id=aws_access_key_id,
+                          aws_secret_access_key=aws_secret_access_key)
     return client
 
 

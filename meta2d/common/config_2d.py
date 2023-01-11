@@ -7,3 +7,5 @@ class Config2D:
     TOKEN: str
     IMAGE_URL: str
     REGION: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
