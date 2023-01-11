@@ -7,28 +7,28 @@ import boto3
 import requests
 
 
-def get_client(region: str, aws_access_key_id: str, aws_secret_access_key: str):
+def get_client(region: str, aws_access_key_id: str, aws_secret_access_key: str, endpoint_url: str = None):
     # create s3 client
     s3 = boto3.resource('s3', region_name=region, aws_access_key_id=aws_access_key_id,
-                        aws_secret_access_key=aws_secret_access_key)
+                        aws_secret_access_key=aws_secret_access_key, endpoint_url=endpoint_url)
     client = boto3.client('s3', region_name=region, aws_access_key_id=aws_access_key_id,
-                          aws_secret_access_key=aws_secret_access_key)
+                          aws_secret_access_key=aws_secret_access_key, endpoint_url=endpoint_url)
     return client
 
 
-def get_image_key(bucket_folder: str = 'b'):
+def get_image_key(bucket_folder: str=None):
     # use uuid as filename
     filename = str(uuid.uuid4()) + '.png'
-    key = bucket_folder + '/' + filename
+    key = bucket_folder + '/' + filename if bucket_folder is not None else filename
     return key
 
 
-def get_image_url(client, key: str, imageContent: bytes, bucketname: str, region: str):
+def get_image_url(client, key: str, imageContent: bytes, bucketname: str, download_endpoint: str):
     # upload image to s3
     client.put_object(Body=imageContent, Bucket=bucketname,
                       Key=key, ContentType='image/png')
     # get url
-    url = "https://s3." + region + ".amazonaws.com/" + bucketname + "/" + key
+    url = download_endpoint + "/" + bucketname + "/" + key
     return url
 
 

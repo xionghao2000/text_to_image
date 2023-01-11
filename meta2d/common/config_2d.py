@@ -9,3 +9,5 @@ class Config2D:
     REGION: str
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
+    ENDPOINT_URL: str
+    DOWNLOAD_ENDPOINT: str
