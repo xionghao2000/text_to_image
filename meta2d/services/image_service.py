@@ -25,7 +25,7 @@ def get_image_key(bucket_folder: str=None):
 def get_image_url(client, key: str, imageContent: bytes, bucketname: str, download_endpoint: str):
     # upload image to s3
     client.put_object(Body=imageContent, Bucket=bucketname,
-                      Key=key, ContentType='image/png')
+                      Key=key, ContentType='image/png', ACL='public-read')
     # get url
     url = download_endpoint + "/" + bucketname + "/" + key
     return url
